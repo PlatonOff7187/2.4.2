@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @Column(nullable = false, name = "username")
     @NotEmpty(message = "The lastname cannot be empty")
     @Size(min = 2, max = 15, message = "The lastname must be more than 2 and less than 15 characters")
-    private String UserName;
+    private String userName;
     @Column(nullable = false, name = "age")
     @Min(value = 0, message = "The age must be more than 18 years old")
     private int age;
@@ -44,12 +44,12 @@ public class User implements UserDetails {
 
     public User(int id, String userName, String password, Set<Role> roles) {
         this.id = id;
-        UserName = userName;
+        this.userName = userName;
         this.password = password;
         this.roles = roles;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
@@ -71,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return userName;
     }
 
     @Override
