@@ -11,8 +11,9 @@
 
 </div>
 
-<a th:href="@{/admin/new}">create</a>
-<a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
+<form th:method="GET" th:action="@{/admin/user/new}">
+  <input type="submit" value="Create"/>
+</form>
 
 <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
   <input hidden type="submit" value="Sign Out"/>

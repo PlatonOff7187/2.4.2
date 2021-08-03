@@ -21,23 +21,23 @@ public class AdminController {
     @GetMapping()
     public String index(Model model)  {
         model.addAttribute("users", userService.index());
-        return "admin/index";
+        return "admin";
     }
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model)  {
         model.addAttribute("user", userService.show(id));
-        return "admin/show";
+        return "show";
     }
     @GetMapping("/new")
     public String newPerson(Model model){
         model.addAttribute("user", new User());
-        return "admin/new";
+        return "new";
     }
     @PostMapping()
     public String create(@ModelAttribute("user")  User user,
                          BindingResult bindingResult, Model model)  {
         if(bindingResult.hasErrors()) {
-            return "admin/new";
+            return "new";
         }
 
         userService.save(user);
@@ -46,13 +46,13 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String edit(Model model,@PathVariable("id") int id)  {
         model.addAttribute("user", userService.show(id));
-        return "admin/edit";
+        return "edit";
     }
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user,
                          BindingResult bindingResult)  {
         if(bindingResult.hasErrors()) {
-            return "admin/edit";
+            return "edit";
         }
 
         userService.update(user);
