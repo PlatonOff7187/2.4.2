@@ -1,6 +1,7 @@
 package web.config;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Component;
 import web.model.Role;
 import web.model.User;
@@ -16,7 +17,10 @@ public class DataInit {
    private final UserService userService;
    private final RoleService roleService;
 
-   @PostConstruct
+
+
+
+    @PostConstruct
     public void init() {
        initRoles();
        initUsers();
