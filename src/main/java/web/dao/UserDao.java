@@ -10,6 +10,6 @@ public interface UserDao {
     List<User> index();
     User show(int id);
     void save(User user);
-    User update(User updateUser);
+    void update(User updateUser);
     void delete(int id);
 }

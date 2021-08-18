@@ -5,26 +5,25 @@ import web.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
 
-    @PersistenceContext(unitName = "entityManagerFactory")
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public Role getRoleByName(String userName) {
-        return   entityManager.createQuery("SELECT r FROM Role r WHERE r.userName = :name", Role.class)
-                .setParameter("name", userName)
+    public Role getRoleByName(String name) {
+        return entityManager.createQuery("SELECT r FROM Role r WHERE r.name = :name", Role.class)
+                .setParameter("name", name)
                 .getSingleResult();
 
     }
 
     @Override
     public void saveRole(Role role) {
-      entityManager.persist(role);
+        entityManager.persist(role);
     }
 
     @Override
@@ -34,10 +33,8 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role getRoleById(int id) {
-        TypedQuery<Role> q = entityManager.createQuery(
-                "SELECT u FROM Role u WHERE u.id = :id", Role.class
-        );
-        q.setParameter("id", id);
-        return q.getResultList().stream().findAny().orElse(null);
+        return entityManager.createQuery("SELECT r FROM Role r WHERE r.id = :id", Role.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 }

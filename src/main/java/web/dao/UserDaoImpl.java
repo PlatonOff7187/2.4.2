@@ -5,18 +5,17 @@ import web.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao{
-    @PersistenceContext(unitName = "entityManagerFactory")
+public class UserDaoImpl implements UserDao {
+    @PersistenceContext
     private EntityManager entityManager;
 
 
     @Override
-    public User getUserByName(String name) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.name =:j_username", User.class).setParameter("j_username", name).getSingleResult();
+    public User getUserByName(String username) {
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.name =:username ", User.class).setParameter("username", username).getSingleResult();
     }
 
     @Override
@@ -26,12 +25,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User show(int id) {
-        TypedQuery<User> typeQ = entityManager.createQuery(
-                "SELECT u FROM User u WHERE u.id = :id",
-                User.class
-        );
-        typeQ.setParameter("id", id);
-        return typeQ.getResultList().stream().findAny().orElse(null);
+        return entityManager.find(User.class, id);
     }
 
     @Override
@@ -40,15 +34,20 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User update(User user) {
-
-       return entityManager.merge(user);
-
+    public void update(User user) {
+        entityManager.merge(user);
 
     }
 
     @Override
     public void delete(int id) {
-        entityManager.remove(show(id));
+        try {
+            User user = entityManager.find(User.class, id);
+            if (user != null) {
+                entityManager.remove(user);
+            }
+        } catch (NullPointerException e) {
+            System.out.println("User с указанным вами id не существует!");
+        }
     }
 }

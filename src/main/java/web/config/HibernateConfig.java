@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -46,12 +45,10 @@ public class HibernateConfig {
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactory.setPackagesToScan("web");
         Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-        jpaProperties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto")
-        );
-        jpaProperties.put("hibernate.show_sql",
-                env.getRequiredProperty("hibernate.show_sql")
-        );
+        jpaProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        jpaProperties.put("hibernate.enable_lazy_load_no_trans", env.getProperty("hibernate.enable_lazy_load_no_trans"));
         entityManagerFactory.setJpaProperties(jpaProperties);
         entityManagerFactory.afterPropertiesSet();
         return entityManagerFactory.getObject();
@@ -63,9 +60,9 @@ public class HibernateConfig {
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslator() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+//
+//    @Bean
+//    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslator() {
+//        return new PersistenceExceptionTranslationPostProcessor();
+//    }
 }

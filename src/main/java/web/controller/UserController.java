@@ -15,7 +15,7 @@ import web.service.UserServiceImpl;
 public class UserController {
 
     @Autowired
-    UserService userService = new UserServiceImpl();
+    UserService userService;
 
     @GetMapping()
     public String showUser(Model model, Authentication authentication) {
